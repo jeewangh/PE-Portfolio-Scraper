@@ -13,7 +13,7 @@ export abstract class BaseScraperStrategy<T extends BaseDataModel> {
 
   private readonly defaultGoToOptions: GoToOptions = {
     waitUntil: 'domcontentloaded',
-    timeout: 30000,
+    timeout: 60000,
   };
 
   constructor(
