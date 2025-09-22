@@ -12,7 +12,7 @@ export abstract class BaseScraperStrategy<T extends BaseDataModel> {
   protected readonly logger = new Logger(this.constructor.name);
 
   private readonly defaultGoToOptions: GoToOptions = {
-    waitUntil: 'networkidle2',
+    waitUntil: 'domcontentloaded',
     timeout: 30000,
   };
 
