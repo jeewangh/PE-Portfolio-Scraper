@@ -14,7 +14,7 @@ import { Page } from 'puppeteer';
 @Injectable()
 export class KkrScraperStrategy extends BaseScraperStrategy<ScrappedCompany> {
   protected readonly logger = new Logger(KkrScraperStrategy.name);
-  private interceptedData: ScrapperApiResponse[] = [];
+  private interceptedCompaniesMap: Map<string, ScrappedCompany> = new Map();
   protected config: ScraperConfig;
 
   constructor(
@@ -146,10 +146,7 @@ export class KkrScraperStrategy extends BaseScraperStrategy<ScrappedCompany> {
     const context = await this.initializePage();
 
     const results = await this.scrapePortfolioList(context);
-    const interceptedCompanies = this.getAllInterceptedData()
-      .flatMap((x) => x.results ?? [])
-      .map((company) => this.normalizeCompanyData(company))
-      .filter((company): company is ScrappedCompany => company !== undefined);
+    const interceptedCompanies = this.getAllInterceptedData();
 
     const aggregatedResults = this.deduplicateCompanies([...results, ...interceptedCompanies]);
 
@@ -392,7 +389,21 @@ export class KkrScraperStrategy extends BaseScraperStrategy<ScrappedCompany> {
               `Captured API response: ${response.url()}`,
               JSON.stringify(data.resultsText),
             );
-            this.interceptedData.push(data);
+
+            for (const company of data.results ?? []) {
+              const key = company.name?.trim();
+              if (!key) continue;
+
+              if (!this.interceptedCompaniesMap.has(key)) {
+                const normalized = this.normalizeCompanyData(company);
+                if (normalized) {
+                  this.interceptedCompaniesMap.set(key, normalized);
+                  this.logger.debug(`Added intercepted company: ${key}`);
+                }
+              } else {
+                this.logger.debug(`Skipped merge for existing company: ${key}`);
+              }
+            }
           }
         } catch (err) {
           this.logger.warn(
@@ -404,8 +415,8 @@ export class KkrScraperStrategy extends BaseScraperStrategy<ScrappedCompany> {
     });
   }
 
-  private getAllInterceptedData(): ScrapperApiResponse[] {
-    return this.interceptedData;
+  private getAllInterceptedData(): ScrappedCompany[] {
+    return Array.from(this.interceptedCompaniesMap.values());
   }
 
   protected mapPortfolioTable(data: Record<string, string>[]): Partial<ScrappedCompany>[] {
@@ -653,7 +664,6 @@ export class KkrScraperStrategy extends BaseScraperStrategy<ScrappedCompany> {
     }
 
     return {
-      ...company,
       employeeCount: employeeCount ?? company.employeeCount,
       executiveMembers: executives.length ? executives : company.executiveMembers,
       yoi: extractedYoi ?? company.yoi,
