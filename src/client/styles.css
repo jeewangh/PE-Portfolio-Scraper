@@ -1,0 +1,139 @@
+body {
+    background-color: #0F1B33;
+    color: #e5e7eb;
+    font-family: sans-serif;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+
+.btn-blue, .btn-green {
+    padding: 0.5rem 1rem;
+    color: #ffffff;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-blue {
+    background-color: #2563eb;
+}
+
+.btn-blue:hover:not(:disabled) {
+    background-color: #1d4ed8;
+}
+
+.btn-blue:disabled {
+    background-color: #1e3a8a;
+    cursor: not-allowed;
+}
+
+.btn-green {
+    background-color: #16a34a;
+}
+
+.btn-green:hover:not(:disabled) {
+    background-color: #15803d;
+}
+
+.btn-green:disabled {
+    background-color: #064e26;
+    cursor: not-allowed;
+}
+
+
+.button-loader {
+    margin-left: 0.5rem;
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+.table-container {
+    margin-top: 1.5rem;
+    overflow-x: auto;
+}
+
+
+.company-table {
+    width: 100%;
+    min-width: 100%;
+    background-color: #1A2A44;
+    border-collapse: collapse;
+    border: 1px solid #021430;
+    font-size: 0.9rem;
+}
+
+.company-table th, .company-table td {
+    padding: 0.5rem 1rem;
+    border: 1px solid #021430;
+    text-align: left;
+}
+
+.company-table th {
+    background-color: #021025;
+    font-weight: bold;
+    text-align: center;
+    color: #e5e7eb;
+}
+
+.subtext {
+    font-size: 0.65rem;
+    font-weight: normal;
+    margin-top: 0.25rem;
+    line-height: 1.2;
+}
+
+.company-table tr:hover {
+    background-color: #22355A;
+}
+
+
+a {
+    color: #3B82F6;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #60A5FA;
+}
+
+
+@media (max-width: 640px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    th, td {
+        width: 100%;
+    }
+
+    .flex {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+}

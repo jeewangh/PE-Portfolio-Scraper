@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1A2A44">
+    <title>Company Data Table</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main role="main">
+    <section class="controls">
+        <div class="button-container">
+            <button id="trigger-scraping" class="btn-blue" aria-label="Trigger data scraping">
+                <span class="button-text">Trigger Scraping</span>
+                <span class="button-loader hidden" role="status">⏳</span>
+            </button>
+            <button id="load-data" class="btn-green" aria-label="Load company data">
+                <span class="button-text">Load Data</span>
+                <span class="button-loader hidden" role="status">⏳</span>
+            </button>
+        </div>
+        <div id="scrape-status" class="status success" style="display:none;" role="alert"></div>
+        <div id="error-msg" class="status error" style="display:none;" role="alert"></div>
+        <div id="loading" class="status loading" style="display:none;" role="status">Loading...</div>
+    </section>
+
+    <section class="table-container">
+        <table id="company-table" class="company-table" style="display:none;" aria-live="polite">
+            <thead>
+            <tr>
+                <th scope="col">Company ID</th>
+                <th scope="col">General</th>
+                <th scope="col">Location</th>
+                <th scope="col">Industry</th>
+                <th scope="col">Ownership</th>
+                <th scope="col">
+                    Additional
+                    <div class="subtext">
+                        (Contains information parsed via /approach/shared-success)
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody id="company-table-body"></tbody>
+        </table>
+    </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="script.js" defer></script>
+</body>
+</html>
