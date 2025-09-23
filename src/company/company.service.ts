@@ -48,7 +48,7 @@ export class CompanyService {
 
     if (existing) {
       const merged = CompanyHelper.mergeCompanyData(existing, companyData);
-      await this.companyRepo.updateByCompanyId(existing.companyId, merged);
+      await this.companyRepo.updateExisting(existing, merged);
     } else {
       await this.companyRepo.createCompany(companyData);
     }

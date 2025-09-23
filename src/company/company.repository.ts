@@ -3,6 +3,7 @@ import { DatabaseRepository } from '../database/database.repository';
 import { CompanyDocument, Company } from './schema/company.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CompanyInterface } from '../types/scrapper/kkr/company-data-model.i';
 
 @Injectable()
 export class CompanyRepository extends DatabaseRepository<CompanyDocument> {
@@ -36,11 +37,9 @@ export class CompanyRepository extends DatabaseRepository<CompanyDocument> {
   }
 
   /** Update a company by ID */
-  async updateByCompanyId(
-    id: number,
-    company: Partial<CompanyDocument>,
-  ): Promise<CompanyDocument | null> {
-    return this.update({ companyId: id }, { $set: company });
+  async updateExisting(existing: CompanyDocument, company: CompanyInterface): Promise<void> {
+    existing.set(company);
+    await existing.save();
   }
 
   /** Delete a company by ID */
